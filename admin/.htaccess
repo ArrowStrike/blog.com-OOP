@@ -1,0 +1,12 @@
+AddDefaultCharset utf-8
+Options -Indexes
+#DirectorySlash off
+
+RewriteEngine On
+RewriteBase /admin/
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php
+
+
+
