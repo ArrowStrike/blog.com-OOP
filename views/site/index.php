@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<?php include ROOT . "/views/layouts/htmlSet.php"; ?>
     <title><?php echo Configs::getConfig('title') ?></title>
 
-    <?php
-    require ROOT . "/views/layouts/links.php";
-    ?>
+<?php
+include ROOT . "/views/layouts/links.php";
+include ROOT . "/views/layouts/header.php"; ?>
 
-</head>
-<body>
-
-<div id="wrapper">
-
-    <?php include ROOT . "/views/layouts/header.php"; ?>
     <div id="content">
         <div class="container">
             <div class="row">
@@ -27,21 +18,20 @@
 
                     </div>
                     <div class="block">
-                        <a href="/kulinariya">Все записи</a>
+                        <a href="/life-style">Все записи</a>
                         <h3>Life Style [Новейшее]</h3>
 
                         <?php
-
-                        $articleList = Articles::getArticleList('kulinariya');
+                        $articleList = Articles::getArticleList(Configs::getConfig('articlePerPage'), 'life-style');
                         include ROOT . "/views/site/bodyRecentArticles.php"; ?>
 
                     </div>
                     <div class="block">
-                        <a href="/sadovodstvo">Все записи</a>
+                        <a href="/it">Все записи</a>
                         <h3>IT [Новейшее]</h3>
 
                         <?php
-                        $articleList = Articles::getArticleList('sadovodstvo');
+                        $articleList = Articles::getArticleList(Configs::getConfig('articlePerPage'), 'it');
                         include ROOT . "/views/site/bodyRecentArticles.php"; ?>
 
                     </div>
@@ -55,9 +45,4 @@
         </div>
     </div>
 
-    <? include ROOT . "/views/layouts/footer.php";
-    ?>
-</div>
-
-</body>
-</html>
+<?php include ROOT . "/views/layouts/footer.php"; ?>

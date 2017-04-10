@@ -1,29 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<?php include ROOT . "/views/layouts/htmlSet.php"; ?>
     <title> <?php echo Configs::getConfig('title') ?></title>
-
-    <?php
-    include ROOT . "/views/layouts/links.php";
-    ?>
-
-</head>
-<body>
-
-<div id="wrapper">
-
-    <?php include ROOT . "/views/layouts//header.php"; ?>
+<?php
+include ROOT . "/views/layouts/links.php";
+include ROOT . "/views/layouts/header.php"; ?>
 
     <div id="content">
         <div class="container">
             <div class="row">
                 <section class="content__left col-md-8">
                     <?php
-                    if (isset($_GET['search'])) {
-                        include ROOT . "/views/articles/search.php";
-                    }
-                    else {
+                    if (!$articleList) {
+                        ?>
+                        <div class="block">
+                            <h3>Статьи не найдены!</h3><br>
+                            <p>Извините, в данной категории отсутсвуют статьи</p
+                        </div>
+                        <?php
+                    } else {
                         include ROOT . "/views/articles/bodyAllArticles.php";
                     }
                     ?>
@@ -36,10 +29,4 @@
             </div>
         </div>
     </div>
-
-    <? include ROOT . "/views/layouts/footer.php";
-    ?>
-</div>
-
-</body>
-</html>
+<? include ROOT . "/views/layouts/footer.php"; ?>

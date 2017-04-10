@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<?php include ROOT . "/views/layouts/htmlSet.php"; ?>
     <title>Copy Right</title>
-    <?php
-    require ROOT."/views/layouts/links.php";
-    ?>
-</head>
-<body>
-
-<div id="wrapper">
-
-    <?php include ROOT."/views/layouts/header.php"; ?>
+<?php
+include ROOT . "/views/layouts/links.php";
+include ROOT . "/views/layouts/header.php"; ?>
 
     <div id="content">
         <div class="container">
@@ -29,15 +20,10 @@
 
                 </section>
                 <section class="content__right col-md-4">
-                    <?php include ROOT."/views/layouts/sidebar.php"; ?>
+                    <?php include ROOT . "/views/layouts/sidebar.php"; ?>
                 </section>
             </div>
         </div>
     </div>
 
-    <? include ROOT."/views/layouts/footer.php"; ?>
-
-</div>
-
-</body>
-</html>
+<? include ROOT . "/views/layouts/footer.php"; ?>
