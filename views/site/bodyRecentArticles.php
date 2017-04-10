@@ -1,5 +1,8 @@
-
-    <div class="block__content">
+<div class="block__content">
+    <?php
+    if (!$articleList) {
+        echo "В данной категории нет стетей!";
+    } else { ?>
         <div class="articles articles__horizontal">
             <?php
             foreach ($articleList as $article) {
@@ -13,12 +16,12 @@
                     <div class="article__info">
                         <a href="/article/<?php echo $article['title_translit']; ?>">
                             <?php Functions::introArticle($article['title'], 50);
-                            $art_cat=Functions::compareCategory($categories, $article['category_id'] );?>
+                            $artCategory = Functions::appropriateCategory($categories, $article['category_id']); ?>
                         </a>
                         <div class="article__info__meta">
                             <small>Категория:
-                                <a href="/<?php echo $art_cat['title_translit']; ?>">
-                                    <?php echo $art_cat['title']; ?>
+                                <a href="/<?php echo $artCategory['title_translit']; ?>">
+                                    <?php echo $artCategory['title']; ?>
                                 </a>
                             </small>
                         </div>
@@ -27,8 +30,7 @@
                         </div>
                     </div>
                 </article>
-                <?php
-            }
-            ?>
+            <?php } ?>
         </div>
-    </div>
+    <?php } ?>
+</div>
