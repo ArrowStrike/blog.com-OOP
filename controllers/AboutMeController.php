@@ -12,8 +12,8 @@ class aboutMeController
     {
         $categories = Category::getCategoryList();
         $articleToSidebar = Articles::getArticleToSidebar();
-        $commentsToSidebar= Comments::getCommentsToSidebar();
-        require_once (ROOT.'/views/aboutMe/index.php');
+        $commentsToSidebar = Comments::getCommentsToSidebar();
+        require_once(ROOT . '/views/aboutMe/index.php');
         return true;
     }
 }

@@ -36,15 +36,15 @@ require_once "../admin/models/start.php";
                             <?php
                             if ($category != null) {
                                 ?>
-                                    <option value="<?php echo $category['id']; ?>"><?php echo $category['title'];
-                                    ?></option><?php
+                                <option value="<?php echo $category['id']; ?>"><?php echo $category['title'];
+                                ?></option><?php
 
                             } else { ?>
                                 <option disabled selected></option><?php }
                             foreach ($categories as $cat) {
-                                if ($cat['id']==$category['id']){
+                                if ($cat['id'] == $category['id']) {
                                     continue;
-                                    }
+                                }
                                 ?>
                                 <option value="<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></option>
                             <?php } ?>
@@ -89,7 +89,7 @@ require_once "../admin/models/start.php";
                                 ?><input type="submit" name="imageDelete" value="Изменить" formmethod="post"
                                          formaction="/admin/index.php?action=changeImage&id=<?= $_GET['id'] ?>"
                                          class="btn">
-                            <?php
+                                <?php
                             } else {
                                 ?> <input type="submit" name="imageDelete" value="Добавить" formmethod="post"
                                           formaction="/admin/index.php?action=changeImage&id=<?= $_GET['id'] ?>"
