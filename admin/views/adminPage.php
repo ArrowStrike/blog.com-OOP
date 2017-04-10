@@ -1,11 +1,9 @@
 <?php
-require_once "/models/start.php";
+require_once "../admin/models/start.php";
 ?>
 <!DOCTYPE html>
 <hmtl>
-    <?php
-    require "links.php";
-    ?>
+    <?php include "links.php"; ?>
     <body>
     <div class="container">
         <!-- Header (navbar) -->
@@ -49,7 +47,9 @@ require_once "/models/start.php";
                             <option disabled selected></option><?php
                             foreach ($categories as $cat) {
                                 ?>
-                                <option value="<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?> (id=<?php echo $cat['id']; ?>)</option>
+                                <option value="<?php echo $cat['id']; ?>">
+                                    <?php echo $cat['title']; ?> (id=<?php echo $cat['id']; ?>)
+                                </option>
                             <?php } ?>
                         </select>
                     </label>
@@ -89,7 +89,8 @@ require_once "/models/start.php";
                                 </td>
                                 <td>
                                     <a href="/admin/index.php?action=delete&id=<?= $elem['id'] ?>"
-                                       title="ВНИМАНИЕ! Удаление статьи приведет к удалению всех привязанных к ней комментариев! ">
+                                       title="ВНИМАНИЕ!
+                                       Удаление статьи приведет к удалению всех привязанных к ней комментариев! ">
                                         Удалить
                                     </a>
                                 </td>
@@ -123,8 +124,10 @@ require_once "/models/start.php";
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="/admin/index.php?action=delete&id=<?= $article['id'] ?>&page=<?= $articles[0]['page'] ?>"
-                                       title="ВНИМАНИЕ! Удаление статьи приведет к удалению всех привязанных к ней комментариев! ">
+                                    <a href="/admin/index.php?action=delete&id=<?= $article['id'] ?>
+                                    &page=<?= $articles[0]['page'] ?>"
+                                       title="ВНИМАНИЕ!
+                                       Удаление статьи приведет к удалению всех привязанных к ней комментариев! ">
                                         Удалить
                                     </a>
                                 </td>
