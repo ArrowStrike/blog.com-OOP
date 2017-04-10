@@ -1,91 +1,63 @@
+<?php include ROOT . "/views/layouts/htmlSet.php"; ?>
+    <title><?php echo $articleItem['title']; ?></title>
 <?php
-require "../includes/config.php";
+include ROOT . "/views/layouts/links.php";
+include ROOT . "/views/layouts/header.php";
+if ($articleItem == false) {
+    ?>
+    <div id="content">
+        <div class="container">
+            <div class="row">
+                <section class="content__left col-md-8">
+                    <div class="block">
+                        <h3>Статья не найдена!</h3>
+                        <div class="block__content">
+                            <div class="full-text">
+                                Запрашиваемая Вами статья не существует
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="content__right col-md-4">
+                    <?php include ROOT . "/views/layouts/sidebar.php"; ?>
+                </section>
+            </div>
+        </div>
+    </div>
+    <?php
+} else {
+    ?>
+    <div id="content">
+        <div class="container">
+            <div class="row">
+                <section class="content__left col-md-8">
+                    <div class="block">
+                        <a>Просмотров: <?php echo $articleItem['views']; ?> </a>
 
-$article = mysqli_query($connection, "SELECT * FROM articles WHERE id = " . (int)$_GET['id']);
-$art = mysqli_fetch_assoc($article);
-if (($_SERVER['REQUEST_URI']) != "/article/" . $art['id'] . "-" . translit($art['title']) && mysqli_num_rows($article) != 0) {
-    redirect("/article/" . $art['id'] . "-" . translit($art['title']));
+                        <h3><?php echo $articleItem['title']; ?></h3>
+                        <div class="block__content">
+                            <?php if ($articleItem['image'] != null && $articleItem['image'] != 'default.jpg') { ?>
+                                <div class="images">
+                                <img src="../public/static/images/<?php echo $articleItem['image']; ?>"
+                                     style="max-width: 75%"></div><?php } ?>
+                            <div class="full-text">
+                                <?php echo $articleItem['text']; ?>
+                            </div>
+                        </div>
+                        <br>
+                        <a>Опубликовано: <?php echo date('d-m-y H:i', strtotime($articleItem['pubdate'])); ?> </a>
+                    </div>
+                    <?php include ROOT . "/views/article/viewComments.php";
+                    include ROOT . "/views/article/addComments.php"; ?>
+                </section>
+                <section class="content__right col-md-4">
+                    <?php include ROOT . "/views/layouts/sidebar.php"; ?>
+                </section>
+            </div>
+        </div>
+    </div>
+    <?php
 }
-
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Article</title>
-    <?php
-    require "../includes/links.php";
-    ?>
-</head>
-<body>
 
-<div id="wrapper">
-
-    <?php include "../includes/header.php"; ?>
-
-    <?php
-    if (mysqli_num_rows($article) <= 0) {
-        ?>
-        <div id="content">
-            <div class="container">
-                <div class="row">
-                    <section class="content__left col-md-8">
-                        <div class="block">
-                            <h3>Статья не найдена!</h3>
-                            <div class="block__content">
-                                <div class="full-text">
-                                    Запрашиваемая Вами статья не существует
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="content__right col-md-4">
-                        <?php include "../includes/sidebar.php"; ?>
-                    </section>
-                </div>
-            </div>
-        </div>
-        <?php
-    } else {
-
-        mysqli_query($connection, "UPDATE articles SET views = views + 1 WHERE id = " . (int)$art['id']);
-        ?>
-        <div id="content">
-            <div class="container">
-                <div class="row">
-                    <section class="content__left col-md-8">
-                        <div class="block">
-                            <a>Просмотров: <?php echo $art['views']; ?> </a>
-
-                            <h3><?php echo $art['title']; ?></h3>
-                            <div class="block__content">
-                                <?php if ($art['image'] != null && $art['image'] != 'default.jpg') { ?>
-                                    <div class="images"><img src="/static/images/<?php echo $art['image']; ?>"
-                                                             style="max-width: 100%"></div><?php } ?>
-                                <div class="full-text">
-                                    <?php echo $art['text']; ?>
-                                </div>
-                            </div>
-                            <br>
-                            <a>Опубликовано: <?php echo date('d-m-y H:i', strtotime($art['pubdate'])); ?> </a>
-                        </div>
-                        <?php include "../includes/viewComments.php";
-                        include "../includes/addComments.php"; ?>
-                    </section>
-                    <section class="content__right col-md-4">
-                        <?php include "../includes/sidebar.php"; ?>
-                    </section>
-                </div>
-            </div>
-        </div>
-        <?php
-
-    }
-    ?>
-
-    <?php include "../includes/footer.php"; ?>
-
-</div>
-
-</body>
-</html>
+<?php include ROOT . "/views/layouts/footer.php"; ?>
