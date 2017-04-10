@@ -10,11 +10,10 @@ class CopyrightController
 {
     public function actionIndex()
     {
-
         $categories = Category::getCategoryList();
         $articleToSidebar = Articles::getArticleToSidebar();
-        $commentsToSidebar= Comments::getCommentsToSidebar();
-        require_once (ROOT.'/views/copyright/index.php');
+        $commentsToSidebar = Comments::getCommentsToSidebar();
+        require_once(ROOT . '/views/copyright/index.php');
 
         return true;
     }
