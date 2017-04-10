@@ -195,6 +195,28 @@ body {
     color: black;
     padding: 10px
 }
+.block .block__content .paginationCenter{
+    padding-top: 30px;
+    text-align: center;
+}
+.block .block__content .paginationCenter > a{
+    text-decoration: none;
+    color: #626262;
+    font-size: 16px;
+    position:relative;
+    margin-right:50px;
+}
+
+.block .block__content .paginationCenter > maza{
+    text-decoration: none;
+    color: #000000;
+    font-size: 20px;
+    position:relative;
+    margin-right:50px;
+}
+
+
+
 .articles.articles__horizontal {
     font-size: 0;
     margin: -12px;
