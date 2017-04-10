@@ -6,12 +6,10 @@ require_once("models/functions.php");
 
 $link = db_connect();
 $version = 1;
-//$article['title'] = '';
-//$article['text'] = '';
 
 
-if (isset($_POST['searchArticle'])&&!empty($_POST)) {
-        $matchFound = searchArticles($link, $_POST['searchArticle']);
+if (isset($_POST['searchArticle']) && !empty($_POST)) {
+    $matchFound = searchArticles($link, $_POST['searchArticle']);
 }
 
 $action = "";
@@ -33,27 +31,27 @@ if ($action != null) {
         $categories = getCategories($link);
         include("views/addEditPage.php");
     }
-    if ($action == 'edit') {//входящий параметр action = edit
+    if ($action == 'edit') {
 
-        if (!isset($_GET['id'])) {//если не установлен параметр id, не знаем, какую открывать статью для редактирования
+        if (!isset($_GET['id'])) {
             redirect("index.php");
-        }//переправляем на клавную страницу администратора
-        $articleID = (int)$_GET['id'];//если параметр задан, то конвертируем его в тип int
+        }
+        $articleID = (int)$_GET['id'];
         $categories = getCategories($link);
         $category = getCategory($link, $articleID);
         $comments = getComments($link, $articleID);
-        //если постданные пустые
-        if (!empty($_POST) && $articleID > 0) {//введенные параметры не должны быть пустыми//$_POST введенные данные
+
+        if (!empty($_POST) && $articleID > 0) {
             if ($_FILES['image']['name'] != null) {
                 deleteImage($link, $articleID);
                 uploadImage();
             }
             editArticle($link, $articleID, (int)$_POST['category_id'], $_POST['title'],
-                        $_FILES['image']['name'], $_POST['text']);
-            redirect("index.php");//переадрессация на главную страницу
+                $_FILES['image']['name'], $_POST['text']);
+            redirect("index.php");
         }
         $article = getArticle($link, $articleID);
-        include("views/addEditPage.php");  //отображаем данные для редактирования
+        include("views/addEditPage.php");
     }
     if ($action == 'delete') {
         $articleID = (int)$_GET['id'];
@@ -65,7 +63,7 @@ if ($action != null) {
         if (isset($_GET['page'])) {
             redirect('index.php?page=' . $_GET['page']);
         } else {
-            redirect("index.php");//переадресация на главную страницу
+            redirect("index.php");
         }
     }
     if ($action == 'deleteImage') {
@@ -94,7 +92,7 @@ if ($action != null) {
         if (!empty($_POST)) {
             newCategory($link, $_POST['newNameOfCategory']);
         }
-        redirect("index.php");//переадресация на главную страницу
+        redirect("index.php");
     }
     if ($action == 'deleteComment') {
         $id = (int)$_GET['id'];

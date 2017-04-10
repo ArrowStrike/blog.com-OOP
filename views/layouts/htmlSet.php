@@ -1,7 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Vlad
- * Date: 09-Apr-17
- * Time: 18:12
- */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
