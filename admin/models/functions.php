@@ -6,10 +6,8 @@ function allArticles($link)
     if (isset($_GET['page'])) {
         $page = (int)$_GET['page'];
     }
-    $offset = ($countOfArticlesPerPage * $page) - $countOfArticlesPerPage; //сдвиг
+    $offset = ($countOfArticlesPerPage * $page) - $countOfArticlesPerPage;
 
-
-// Формируем запрос
     $query = "SELECT title, pubdate, image, id, category_id 
               FROM articles ORDER BY id DESC LIMIT $offset,$countOfArticlesPerPage";
     $result = mysqli_query($link, $query);
@@ -18,21 +16,24 @@ function allArticles($link)
         die(mysqli_error($link));
 
 // Извлекаем данные
-    $n = mysqli_num_rows($result);
+    $countOfRows = mysqli_num_rows($result);
     $articles = array();
 
-    for ($i = 0; $i < $n; $i++) {
+    for ($i = 0; $i < $countOfRows; $i++) {
         $row = mysqli_fetch_assoc($result);
         $articles[] = $row;
     }
     $totalCount = 0;//количество записей(статей)
     $totalCountArticles = mysqli_query($link, "SELECT COUNT(id) AS total_count FROM articles");
+
     $totalCount = mysqli_fetch_assoc($totalCountArticles);
     $totalCount = $totalCount['total_count'];
     $totalPages = ceil($totalCount / $countOfArticlesPerPage);
+
     if ($page <= 1 || $page > $totalPages) {
         $page = 1;
     }
+
     $articles[0]['page'] = $page;
     $articles[0]['totalPages'] = $totalPages;
 
@@ -74,7 +75,7 @@ function newArticle($link, $category_id, $title, $image, $text)
         $category_id,
         mysqli_real_escape_string($link, $image),
         mysqli_real_escape_string($link, $text));
-//  echo $query;
+
     $result = mysqli_query($link, $query);
 
     if (!$result)
@@ -90,7 +91,6 @@ function editArticle($link, $id, $category_id, $title, $image, $text)
     $titleTranslit = translit($title);
     $text = trim($text);
     $image = trim($image);
-//$pubdate = trim($pubdate);
     $id = (int)$id;
     $category_id = (int)$category_id;
 // Проверка
@@ -104,10 +104,11 @@ function editArticle($link, $id, $category_id, $title, $image, $text)
                           WHERE id='%d'";
         $query = sprintf($templateUpdate,
             $category_id,
-            mysqli_real_escape_string($link, $title),//проводит экранцию входящих параметров, добавляет обратный слэш, перед символями, которые могут испортить sql запрос
+            //проводит экранцию входящих параметров, добавляет обратный слэш,
+            // перед символями, которые могут испортить sql запрос
+            mysqli_real_escape_string($link, $title),
             mysqli_real_escape_string($link, $titleTranslit),
             mysqli_real_escape_string($link, $text),
-//     mysqli_real_escape_string($link, $pubdate),
             $id);
     } else {
         $templateUpdate = "UPDATE articles 
@@ -115,20 +116,19 @@ function editArticle($link, $id, $category_id, $title, $image, $text)
                           WHERE id='%d'";
         $query = sprintf($templateUpdate,
             $category_id,
-            mysqli_real_escape_string($link, $title),//проводит экранцию входящих параметров, добавляет обратный слэш, перед символями, которые могут испортить sql запрос
+            mysqli_real_escape_string($link, $title),
             mysqli_real_escape_string($link, $titleTranslit),
             mysqli_real_escape_string($link, $image),
             mysqli_real_escape_string($link, $text),
-//     mysqli_real_escape_string($link, $pubdate),
             $id);
     }
 
-    $result = mysqli_query($link, $query); //выполнение запроса
+    $result = mysqli_query($link, $query);
 
-    if (!$result) //если нет результатов
-        die(mysqli_error($link)); //приостановка работы и вывести ошибку
+    if (!$result)
+        die(mysqli_error($link));
 
-    return mysqli_affected_rows($link); //вовзращаем количество строк, которое отредактировали
+    return mysqli_affected_rows($link);
 }
 
 function deleteArticle($link, $id)
@@ -166,7 +166,7 @@ function introArticle($text, $size)
 
 function getCategories($link)
 {
-    $categoriesQueryResult = mysqli_query($link, "SELECT * FROM articles_categories  ORDER BY id"); //цикл повторяется в header.php
+    $categoriesQueryResult = mysqli_query($link, "SELECT * FROM articles_categories  ORDER BY id");
 
     if (!$categoriesQueryResult)
         die(mysqli_error($link));
@@ -182,7 +182,7 @@ function getCategory($link, $id)
 {
     $query = "SELECT * FROM articles_categories WHERE id IN 
               (SELECT category_id FROM articles WHERE id =" . (int)$id . ")";
-    $queryResult = mysqli_query($link, $query); //цикл повторяется в header.php
+    $queryResult = mysqli_query($link, $query);
     if (!$queryResult)
         die(mysqli_error($link));
 
@@ -263,7 +263,7 @@ function getComments($link, $articleID)
     return $comments;
 }
 
-function deleteComment($link, $id, $articleID)
+function deleteComment($link, $id)
 {
 
     $id = (int)$id;
@@ -330,22 +330,24 @@ function changeImageName($link, $articleID, $image)
 function deleteImage($link, $articleID)
 {
     $articleID = (int)$articleID;
-
     $article = getArticle($link, $articleID);
+
     $templateSelect = "SELECT COUNT(image) AS repeats FROM articles WHERE image='%s'";
     $querySel = sprintf($templateSelect,
         mysqli_real_escape_string($link, $article['image']));
     $totalCountQuery = mysqli_query($link, $querySel);
     $totalCount = mysqli_fetch_assoc($totalCountQuery);
+
     $templateUpdate = "UPDATE articles SET image='default.jpg' WHERE id=" . $articleID;
     $queryUpd = mysqli_query($link, $templateUpdate);
-    if (!$totalCountQuery && !$queryUpd) {//если нет результатов
-        die(mysqli_error($link)); //приостановка работы и вывести ошибку
+    if (!$totalCountQuery && !$queryUpd) {
+        die(mysqli_error($link));
     }
+    
     if ($totalCount['repeats'] == 1) { //проверка на повторы
         $imageDeletePath = '../public//static/images/' . $article['image'];
         $imagePreviewDeletePath = '../public/static/imagesPreview/' . $article['image'];
-        if ($article['image'] != null && $article['image'] != 'default.jpg') { //проверка на наличие фотографии в целом
+        if ($article['image'] != null && $article['image'] != 'default.jpg') {
             unlink($imageDeletePath);
             unlink($imagePreviewDeletePath);
         }

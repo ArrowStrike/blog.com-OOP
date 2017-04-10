@@ -8,16 +8,18 @@
 require_once "database.php";
 require_once "functions.php";
 session_start();
+
 $link = db_connect();
 $email = htmlspecialchars($_POST["email"]);
-/*if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo "E-mail ($email) указан верно.\n";
-} */
 $password = htmlspecialchars($_POST["password"]);
 //$password = password_hash($password, PASSWORD_DEFAULT);
+
 if (checkUser($link, $email, $password)) {
     $_SESSION["email"] = $email;
     $_SESSION["password"] = $password;
-} else $_SESSION["error_auth"] = 1;
+} else {
+    $_SESSION["error_auth"] = 1;
+}
+
 redirect($_SERVER["HTTP_REFERER"]);
 exit;

@@ -97,7 +97,7 @@ if ($action != null) {
     if ($action == 'deleteComment') {
         $id = (int)$_GET['id'];
         $articleID = (int)$_GET['articleID'];
-        $comments = deleteComment($link, $id, $articleID);
+        $comments = deleteComment($link, $id);
         redirect("index.php?action=edit&id=" . $articleID);
     }
 } else {
