@@ -8,9 +8,10 @@
  */
 class Functions
 {
+
     public static function translit($title)
     {
-        //  $title = preg_replace('~[^-a-z0-9_]+~u', '-', $title);
+
         static $converter = array(
             'а' => 'a', 'б' => 'b', 'в' => 'v',
             'г' => 'g', 'д' => 'd', 'е' => 'e',
@@ -45,16 +46,16 @@ class Functions
 
     }
 
-    public static function compareCategory($categories, $id)
+    public static function appropriateCategory($categories, $id)
     {
-        $art_cat = false;
+        $artCategory = false;
         foreach ($categories as $cat) {
             if ($cat['id'] == $id) {
-                $art_cat = $cat;
+                $artCategory = $cat;
                 break;
             }
         }
-        return $art_cat;
+        return $artCategory;
     }
 
     public static function introArticle($text, $size)
@@ -70,3 +71,41 @@ class Functions
     }
 
 }
+
+
+/*
+ *     public static function traslate()
+    {
+        $db = Db::getConnection();
+
+        $result = $db->query("SELECT title FROM articles_categories");
+
+
+        $result->setFetchMode(PDO::FETCH_ASSOC);
+
+        while ($row = $result->fetch()) {
+            $articleList[] = $row;
+
+        }
+
+        foreach ($articleList as $list) {
+            $articleList2[] = self::translit($list['title']);
+
+        }
+
+        $i = 0;
+        foreach ($articleList as $list) {
+
+            $string = "UPDATE articles_categories
+                        SET title_translit='" . $articleList2[$i] . "'
+                        WHERE title='" . $list['title'] . "'";
+
+            $result = $db->prepare($string);
+
+            $result->execute();
+            $i++;
+        }
+
+
+    }
+ */
