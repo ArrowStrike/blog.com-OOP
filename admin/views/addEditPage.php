@@ -1,5 +1,5 @@
 <?php
-require_once "/models/start.php";
+require_once "../admin/models/start.php";
 ?>
 <!DOCTYPE html>
 <hmtl>
@@ -35,14 +35,16 @@ require_once "/models/start.php";
                         <select required name="category_id" autofocus>
                             <?php
                             if ($category != null) {
-                                foreach ($category as $cat) {
-                                    ?>
-                                    <option value="<?php echo $cat['id']; ?>"><?php echo $cat['title'];
+                                ?>
+                                    <option value="<?php echo $category['id']; ?>"><?php echo $category['title'];
                                     ?></option><?php
-                                }
+
                             } else { ?>
                                 <option disabled selected></option><?php }
                             foreach ($categories as $cat) {
+                                if ($cat['id']==$category['id']){
+                                    continue;
+                                    }
                                 ?>
                                 <option value="<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></option>
                             <?php } ?>
@@ -59,7 +61,8 @@ require_once "/models/start.php";
                             <div class="articles">Фотография статьи
                                 <div class="article">
                                     <div class="article__image"
-                                         style="background-image: url(../public/static/imagesPreview/<?php echo $article['image']; ?>);">
+                                         style="background-image:
+                                             url(../public/static/imagesPreview/<?php echo $article['image']; ?>);">
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +89,8 @@ require_once "/models/start.php";
                                 ?><input type="submit" name="imageDelete" value="Изменить" formmethod="post"
                                          formaction="/admin/index.php?action=changeImage&id=<?= $_GET['id'] ?>"
                                          class="btn">
-                            <?php } else {
+                            <?php
+                            } else {
                                 ?> <input type="submit" name="imageDelete" value="Добавить" formmethod="post"
                                           formaction="/admin/index.php?action=changeImage&id=<?= $_GET['id'] ?>"
                                           class="btn"><?php }
