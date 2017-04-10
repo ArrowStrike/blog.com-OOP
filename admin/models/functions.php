@@ -56,7 +56,7 @@ function newArticle($link, $category_id, $title, $image, $text)
 {
 // Подготовка
     $title = trim($title);
-    $title_translit = translit($title);
+    $titleTranslit = translit($title);
     $image = trim($image);
     $text = trim($text);
     $category_id = (int)$category_id;
@@ -70,7 +70,7 @@ function newArticle($link, $category_id, $title, $image, $text)
 
     $query = sprintf($templateAdd,
         mysqli_real_escape_string($link, $title),
-        mysqli_real_escape_string($link, $title_translit),
+        mysqli_real_escape_string($link, $titleTranslit),
         $category_id,
         mysqli_real_escape_string($link, $image),
         mysqli_real_escape_string($link, $text));
@@ -87,7 +87,7 @@ function editArticle($link, $id, $category_id, $title, $image, $text)
 {
 // Подготовка
     $title = trim($title);//trim --  Удаляет пробелы из начала и конца строки
-    $title_translit = translit($title);
+    $titleTranslit = translit($title);
     $text = trim($text);
     $image = trim($image);
 //$pubdate = trim($pubdate);
@@ -99,20 +99,24 @@ function editArticle($link, $id, $category_id, $title, $image, $text)
 
 // Запрос
     if ($image == null) {
-        $templateUpdate = "UPDATE articles SET category_id='%d', title='%s', title_translit'%s', text='%s' WHERE id='%d'";
+        $templateUpdate = "UPDATE articles 
+                          SET category_id='%d', title='%s', title_translit='%s', text='%s' 
+                          WHERE id='%d'";
         $query = sprintf($templateUpdate,
             $category_id,
             mysqli_real_escape_string($link, $title),//проводит экранцию входящих параметров, добавляет обратный слэш, перед символями, которые могут испортить sql запрос
-            mysqli_real_escape_string($link, $title_translit),
+            mysqli_real_escape_string($link, $titleTranslit),
             mysqli_real_escape_string($link, $text),
 //     mysqli_real_escape_string($link, $pubdate),
             $id);
     } else {
-        $templateUpdate = "UPDATE articles SET category_id='%d', title='%s', title_translit'%s', image='%s', text='%s' WHERE id='%d'";
+        $templateUpdate = "UPDATE articles 
+                          SET category_id='%d', title='%s', title_translit='%s', image='%s', text='%s'
+                          WHERE id='%d'";
         $query = sprintf($templateUpdate,
             $category_id,
             mysqli_real_escape_string($link, $title),//проводит экранцию входящих параметров, добавляет обратный слэш, перед символями, которые могут испортить sql запрос
-            mysqli_real_escape_string($link, $title_translit),
+            mysqli_real_escape_string($link, $titleTranslit),
             mysqli_real_escape_string($link, $image),
             mysqli_real_escape_string($link, $text),
 //     mysqli_real_escape_string($link, $pubdate),
@@ -146,20 +150,6 @@ function deleteArticle($link, $id)
     return mysqli_affected_rows($link);
 }
 
-
-//точки по лимиту предложений
-/*function articlesIntroSent($text, $sentencesLimit = 1)
-{
-$sentences = explode('.', $text, ($sentencesLimit + 1));
-$sentencesInText = count(explode('.', $text));
-if (count($sentences) > $sentencesLimit)
-array_pop($sentences);
-if ($sentencesInText > $sentencesLimit)
-echo implode('.', $sentences) . '. ...';
-else
-echo implode('.', $sentences);
-}*/
-
 //точки по лимиту символов, с убиранием последнего слова
 function introArticle($text, $size)
 {
@@ -173,28 +163,6 @@ function introArticle($text, $size)
         echo $text;
 }
 
-//точки по лимиту символов
-//точки по лимиту слов
-/*
-function introArticle($text, $word_limit, $size)
-{
-    $textSize = mb_strlen($text);
-    if ($textSize > $size) {
-        $text = mb_substr($text, 0, $size);
-        $words = explode(' ', $text, ($word_limit + 1));
-        array_pop($words);
-        echo implode(' ', $words) . '...';
-    } else {
-        $words = explode(' ', $text, ($word_limit + 1));
-        $words_in_text = count(explode(' ', $text));
-        if (count($words) > $word_limit)
-            array_pop($words);
-        if ($words_in_text > $word_limit) {
-            echo implode(' ', $words) . '...';
-        } else echo implode(' ', $words);
-    }
-}
-*/
 
 function getCategories($link)
 {
@@ -217,10 +185,9 @@ function getCategory($link, $id)
     $queryResult = mysqli_query($link, $query); //цикл повторяется в header.php
     if (!$queryResult)
         die(mysqli_error($link));
-    $category = array();
-    while ($cat = mysqli_fetch_assoc($queryResult)) {
-        $category[] = $cat;
-    }
+
+    $category = mysqli_fetch_assoc($queryResult);
+
     return $category;
 
 }
@@ -234,7 +201,8 @@ function newCategory($link, $categoryNewName)
     $categoryNewName = trim($categoryNewName);
     $translit = translit($categoryNewName);
     $query = "INSERT INTO articles_categories (title, title_translit)
-              VALUES ('" . mysqli_real_escape_string($link, $categoryNewName) . "','". mysqli_real_escape_string($link, $translit) ."')";
+              VALUES ('" . mysqli_real_escape_string($link, $categoryNewName) . "',
+              '" . mysqli_real_escape_string($link, $translit) . "')";
 
     $result = mysqli_query($link, $query);
 
@@ -248,9 +216,7 @@ function newCategory($link, $categoryNewName)
 /////Удаление категории -->
 function deleteCategory($link, $categoryID)
 {
-
     $categoryID = (int)$categoryID;
-
 
 // Проверка
     if ($categoryID == 0)//0 может в том случае, если не id не число
@@ -262,21 +228,6 @@ function deleteCategory($link, $categoryID)
         $Image = (int)$Image['id'];
         deleteImage($link, $Image);
     }
-
-    /*   $queryWhereIsArticles = "SELECT image FROM articles WHERE category_id=" . $categoryID;
-    $result = mysqli_query($link, $queryWhereIsArticles);
-
-
-    while ($deletePhoto = mysqli_fetch_assoc($result)) {
-    if ($deletePhoto['image'] != null) {
-    $imageDeletePath = '../static/images/' . $deletePhoto['image'];
-    $imagePreviewDeletePath = '../static/imagesPreview/' . $deletePhoto['image'];
-    unlink($imageDeletePath);
-    unlink($imagePreviewDeletePath);
-    }
-    }
-    */
-
 
 // Запрос
     $deleteComments = sprintf("DELETE FROM comments WHERE articles_id IN 
@@ -602,3 +553,41 @@ function translit($title)
     return $converted;
 
 }
+
+
+//точки по лимиту предложений
+/*function articlesIntroSent($text, $sentencesLimit = 1)
+{
+$sentences = explode('.', $text, ($sentencesLimit + 1));
+$sentencesInText = count(explode('.', $text));
+if (count($sentences) > $sentencesLimit)
+array_pop($sentences);
+if ($sentencesInText > $sentencesLimit)
+echo implode('.', $sentences) . '. ...';
+else
+echo implode('.', $sentences);
+}*/
+
+
+//точки по лимиту символов
+//точки по лимиту слов
+/*
+function introArticle($text, $word_limit, $size)
+{
+    $textSize = mb_strlen($text);
+    if ($textSize > $size) {
+        $text = mb_substr($text, 0, $size);
+        $words = explode(' ', $text, ($word_limit + 1));
+        array_pop($words);
+        echo implode(' ', $words) . '...';
+    } else {
+        $words = explode(' ', $text, ($word_limit + 1));
+        $words_in_text = count(explode(' ', $text));
+        if (count($words) > $word_limit)
+            array_pop($words);
+        if ($words_in_text > $word_limit) {
+            echo implode(' ', $words) . '...';
+        } else echo implode(' ', $words);
+    }
+}
+*/
