@@ -1,8 +1,10 @@
 <footer id="footer">
     <div class="container">
-        <a href="/"> <div class="footer__logo">
+        <a href="/">
+            <div class="footer__logo">
                 <?php echo Configs::getConfig('title') ?> &copy; 2017
-        </div></a>
+            </div>
+        </a>
         <nav class="footer__menu">
             <ul>
                 <li><a href="/">Главная</a></li>
@@ -14,3 +16,7 @@
         </nav>
     </div>
 </footer>
+</div>
+
+</body>
+</html>
