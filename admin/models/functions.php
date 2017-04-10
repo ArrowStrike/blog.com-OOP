@@ -343,7 +343,7 @@ function deleteImage($link, $articleID)
     if (!$totalCountQuery && !$queryUpd) {
         die(mysqli_error($link));
     }
-    
+
     if ($totalCount['repeats'] == 1) { //проверка на повторы
         $imageDeletePath = '../public//static/images/' . $article['image'];
         $imagePreviewDeletePath = '../public/static/imagesPreview/' . $article['image'];

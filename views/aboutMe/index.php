@@ -68,7 +68,7 @@
 
                             <h3>Базовые знания</h3>
                             1) Самообучение<br>
-                            Java; PHP; SQL; HTML; CSS; Java Script;<br>
+                            Java; PHP; SQL; HTML; CSS; <br>
                             2) Школа и Институт<br>
                             Visual Basic; C#; Haskell; Pascal<br>
                             C++ - Защита курсовой работы – 9(Оценка)<br>
