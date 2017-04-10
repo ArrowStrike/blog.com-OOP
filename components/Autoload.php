@@ -6,15 +6,12 @@
  * Date: 07-Apr-17
  * Time: 6:06
  */
-function __autoload($class_name)
-{
+spl_autoload_register(function ($class_name) {
     // Массив папок, в которых могут находиться необходимые классы
     $array_paths = array(
         '/models/',
         '/components/',
         '/controllers/',
-        '/public/',
-        '/views/layouts/',
     );
 
     // Проходим по массиву папок
@@ -28,4 +25,4 @@ function __autoload($class_name)
             include_once $path;
         }
     }
-}
+});
