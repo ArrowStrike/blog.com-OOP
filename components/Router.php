@@ -8,8 +8,11 @@ class Router
 
     public function __construct()
     {
-        $routesPath = ROOT . '/config/routes.php'; // указываем путь к роутам
-        $this->routes = include($routesPath); // присваиваем свойству routes массив в файле routes.php
+        // указываем путь к роутам
+        $routesPath = ROOT . '/config/routes.php';
+
+        // присваиваем свойству routes массив в файле routes.php
+        $this->routes = include($routesPath);
     }
 
     private function getURI()//Returns request string
@@ -21,52 +24,56 @@ class Router
 
     public function run()//анализирует запрос и принимает управление от front controllera
     {
-
-
         //Получаем строку запроса
         $uri = $this->getURI();
+
         //Проверить наличие такого запроса в routes.php
-        foreach ($this->routes as $uriPattern => $path){
-           //Сравниваем $uriPattern и $uri
-            if (preg_match("~$uriPattern~", $uri)){ //~ вместо / ,так как могут быть и сплеши в адресе
+        foreach ($this->routes as $uriPattern => $path) {
+            //Сравниваем $uriPattern и $uri
+            if (preg_match("~$uriPattern~", $uri)) { //~ вместо / ,так как могут быть и сплеши в адресе
 
+                //в строке запроса, ищем параметры "спорт/114",
+                // если находим, то в подставляем строку Path articles/view/$1/$2 и получим внутренний маршрут
+                $internalRoute = preg_replace("~$uriPattern~", $path, $uri);
 
-                $internalRoute = preg_replace("~$uriPattern~", $path, $uri);//в строке запроса, ищем параметры "спорт/114", если находим, то в подставляем строку Path articles/view/$1/$2 и получим внутренний маршрут
-                //Если есть совпадение, определить какой контроллер и action и параметр обрабатывают запрос
+                //для того, что бы разделить строку на две части - контроллер и action
+                $segments = explode('/', $internalRoute);
 
-                $segments = explode('/', $internalRoute); // для того, что бы разделить строку на две части - контроллер и action
+                //получает первый элемент массива и удаляет его из массива (получает controller)
+                $controllerName = array_shift($segments) . 'Controller';
 
-                $controllerName = array_shift($segments).'Controller';//получает первый элемент массива и удаляет его из массива (получает controller)
-                $controllerName = ucfirst($controllerName); //делает первую букву строки заглавной
+                //делает первую букву строки заглавной
+                $controllerName = ucfirst($controllerName);
 
-                $actionName = 'action'.ucfirst(array_shift($segments));//получает Action
+                //получает Action
+                $actionName = 'action' . ucfirst(array_shift($segments));
 
-                $parameters = $segments;//массив с параметрами //$1, $2, $3...
+                //массив с параметрами //$1, $2, $3...
+                $parameters = $segments;
 
                 ////Подключить файл класса-контроллера
-                $controllerFile = ROOT.'/controllers/'.
+                $controllerFile = ROOT . '/controllers/' .
                     $controllerName . '.php';
 
-                if (file_exists($controllerFile)){ //проверяем, существует ли такой файл на диске
+                //проверяем, существует ли такой файл на диске
+                if (file_exists($controllerFile)) {
                     include_once $controllerFile;
                 }
 
-
                 //Создать обьект, вызвать метод (т.е action)
                 $controllerObject = new $controllerName;
-                //вызывает экшон, который находится в переменной actionName у обьекта controllerObject(NewsController), при этом передает ему массив с параметрами
+
+                //вызывает экшон, который находится в переменной actionName у обьекта controllerObject(NewsController),
+                // при этом передает ему массив с параметрами
                 $result = call_user_func_array(array($controllerObject, $actionName), $parameters);
 
 
-                if ($result != null){
+                if ($result != null) {
                     break;
                 }
 
             }
         }
-
-
-
 
 
     }
