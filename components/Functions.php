@@ -50,7 +50,7 @@ class Functions
     {
         $artCategory = false;
         foreach ($categories as $cat) {
-            if ($cat['id'] == $id) {
+            if ($cat['id'] === $id) {
                 $artCategory = $cat;
                 break;
             }

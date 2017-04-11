@@ -33,7 +33,7 @@ if (checkUser($link, $_SESSION["email"], $_SESSION["password"])) {
             </nav>
 
             <?php
-            if ($_SESSION["error_auth"] == 1) {
+            if ($_SESSION["error_auth"] === 1) {
                 ?>
                 <z><B>Неверные имя пользователя и/или пароль!</B></z>
                 <?php

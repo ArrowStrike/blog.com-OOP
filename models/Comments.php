@@ -98,7 +98,7 @@ class Comments
 
     public static function checkEmail($email)
     {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL) == false || empty($email)) {
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false || empty($email)) {
             return false;
         }
         return true;

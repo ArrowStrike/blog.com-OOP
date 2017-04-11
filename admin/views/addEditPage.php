@@ -42,7 +42,7 @@ require_once "../admin/models/start.php";
                             } else { ?>
                                 <option disabled selected></option><?php }
                             foreach ($categories as $cat) {
-                                if ($cat['id'] == $category['id']) {
+                                if ($cat['id'] === $category['id']) {
                                     continue;
                                 }
                                 ?>
@@ -84,7 +84,7 @@ require_once "../admin/models/start.php";
                         <input type="file" name="image">
                     </label>
                     <label>
-                        <?php if ($_GET['action'] == 'edit') {
+                        <?php if ($_GET['action'] === 'edit') {
                             if ($article['image'] != null && $article['image'] != 'default.jpg') {
                                 ?><input type="submit" name="imageDelete" value="Изменить" formmethod="post"
                                          formaction="/admin/index.php?action=changeImage&id=<?= $_GET['id'] ?>"

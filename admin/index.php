@@ -17,7 +17,7 @@ if (isset($_GET['action'])) {
     $action = $_GET['action'];
 }
 if ($action != null) {
-    if ($action == 'add') {
+    if ($action === 'add') {
         if ($_FILES['image']['name'] != null) {
             uploadImage();
         } else {
@@ -31,7 +31,7 @@ if ($action != null) {
         $categories = getCategories($link);
         include("views/addEditPage.php");
     }
-    if ($action == 'edit') {
+    if ($action === 'edit') {
 
         if (!isset($_GET['id'])) {
             redirect("index.php");
@@ -53,7 +53,7 @@ if ($action != null) {
         $article = getArticle($link, $articleID);
         include("views/addEditPage.php");
     }
-    if ($action == 'delete') {
+    if ($action === 'delete') {
         $articleID = (int)$_GET['id'];
         $isImage = getArticle($link, $articleID);
         if ($isImage['image'] != null) {
@@ -66,7 +66,7 @@ if ($action != null) {
             redirect("index.php");
         }
     }
-    if ($action == 'deleteImage') {
+    if ($action === 'deleteImage') {
         $articleID = (int)$_GET['id'];
         $isImage = getArticle($link, $articleID);
         if ($isImage['image'] != null) {
@@ -74,7 +74,7 @@ if ($action != null) {
         }
         redirect('index.php?action=edit&id=' . $articleID);
     }
-    if ($action == 'changeImage') {
+    if ($action === 'changeImage') {
         $articleID = (int)$_GET['id'];
         $isImage = getArticle($link, $articleID);
         if ($_FILES['image']['name'] != null) {
@@ -84,17 +84,17 @@ if ($action != null) {
         }
         redirect('index.php?action=edit&id=' . $articleID);
     }
-    if ($action == 'deleteCategory') {
+    if ($action === 'deleteCategory') {
         $categories = deleteCategory($link, (int)$_POST['category_id']);
         redirect("index.php");
     }
-    if ($action == 'addCategory') {
+    if ($action === 'addCategory') {
         if (!empty($_POST)) {
             newCategory($link, $_POST['newNameOfCategory']);
         }
         redirect("index.php");
     }
-    if ($action == 'deleteComment') {
+    if ($action === 'deleteComment') {
         $id = (int)$_GET['id'];
         $articleID = (int)$_GET['articleID'];
         $comments = deleteComment($link, $id);

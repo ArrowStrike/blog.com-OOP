@@ -62,7 +62,7 @@ function newArticle($link, $category_id, $title, $image, $text)
     $text = trim($text);
     $category_id = (int)$category_id;
 // Проверка
-    if ($title == '')
+    if (empty($title))
         return false;
 
 // Запрос
@@ -94,7 +94,7 @@ function editArticle($link, $id, $category_id, $title, $image, $text)
     $id = (int)$id;
     $category_id = (int)$category_id;
 // Проверка
-    if ($title == '')
+    if (empty($title))
         return false;//не может быть статьи у которой заголовок пустой
 
 // Запрос
@@ -135,7 +135,7 @@ function deleteArticle($link, $id)
 {
     $id = (int)$id;
 // Проверка
-    if ($id == 0)//0 может в том случае, если не id не число
+    if ($id === 0)//0 может в том случае, если не id не число
         return false;
 // Запрос
     $deleteComments = sprintf("DELETE FROM comments WHERE articles_id='%d'", $id);
@@ -194,7 +194,7 @@ function getCategory($link, $id)
 
 function newCategory($link, $categoryNewName)
 {
-    if ($categoryNewName == '')
+    if (empty($categoryNewName))
         return false;
 
 // Запрос
@@ -219,7 +219,7 @@ function deleteCategory($link, $categoryID)
     $categoryID = (int)$categoryID;
 
 // Проверка
-    if ($categoryID == 0)//0 может в том случае, если не id не число
+    if ($categoryID === 0)//0 может в том случае, если не id не число
         return false;
 
     $imagesID = "SELECT id FROM articles WHERE category_id=" . $categoryID;
@@ -248,7 +248,7 @@ function deleteCategory($link, $categoryID)
 function getComments($link, $articleID)
 {
     $articleID = (int)$articleID;
-    if ($articleID == 0)//0 может в том случае, если не id не число
+    if ($articleID === 0)//0 может в том случае, если не id не число
         return false;
 
     $query = "SELECT * FROM comments WHERE articles_id = " . (int)$articleID . " ORDER BY id DESC";
@@ -269,7 +269,7 @@ function deleteComment($link, $id)
     $id = (int)$id;
 
 // Проверка
-    if ($id == 0)//0 может в том случае, если не id не число
+    if ($id === 0)//0 может в том случае, если не id не число
         return false;
 
 // Запрос
@@ -377,9 +377,9 @@ function resize($file, $type, $directory, $rotate = null, $quality = null)
         $quality = 100;
 
 // Cоздаём исходное изображение на основе исходного файла
-    if ($file['type'] == 'image/jpeg')
+    if ($file['type'] === 'image/jpeg')
         $source = imagecreatefromjpeg($file['tmp_name']);
-    else if ($file['type'] == 'image/png')
+    else if ($file['type'] === 'image/png')
         $source = imagecreatefrompng($file['tmp_name']);
     else
         return false;
@@ -414,9 +414,9 @@ function resize($file, $type, $directory, $rotate = null, $quality = null)
         imagecopyresampled($dest, $src, 0, 0, 0, 0, $wDest, $hDest, $wSrc, $hSrc);
 
 // Вывод картинки и очистка памяти
-        if ($file['type'] == 'image/jpeg')
+        if ($file['type'] === 'image/jpeg')
             imagejpeg($dest, $tmpPath . $file['name'], $quality);
-        else if ($file['type'] == 'image/png') {
+        else if ($file['type'] === 'image/png') {
             $q = 9 / 100;
             $quality *= $q;
             imagepng($dest, $tmpPath . $file['name'], $quality);
@@ -427,9 +427,9 @@ function resize($file, $type, $directory, $rotate = null, $quality = null)
         return $file['name'];
     } else {
 // Вывод картинки и очистка памяти
-        if ($file['type'] == 'image/jpeg')
+        if ($file['type'] === 'image/jpeg')
             imagejpeg($src, $tmpPath . $file['name'], $quality);
-        else if ($file['type'] == 'image/png') {
+        else if ($file['type'] === 'image/png') {
             $q = 9 / 100;
             $quality *= $q;
             imagepng($src, $tmpPath . $file['name'], $quality);

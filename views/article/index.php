@@ -3,7 +3,7 @@
 <?php
 include ROOT . "/views/layouts/links.php";
 include ROOT . "/views/layouts/header.php";
-if ($articleItem == false) {
+if ($articleItem === false) {
     ?>
     <div id="content">
         <div class="container">
