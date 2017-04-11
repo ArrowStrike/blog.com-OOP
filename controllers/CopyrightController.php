@@ -14,7 +14,5 @@ class CopyrightController
         $articleToSidebar = Articles::getArticleToSidebar();
         $commentsToSidebar = Comments::getCommentsToSidebar();
         require_once(ROOT . '/views/copyright/index.php');
-
-        return true;
     }
 }

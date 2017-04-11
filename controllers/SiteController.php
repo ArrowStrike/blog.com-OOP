@@ -9,6 +9,5 @@ class SiteController
         $articleToSidebar = Articles::getArticleToSidebar();
         $commentsToSidebar = Comments::getCommentsToSidebar();
         require_once(ROOT . '/views/site/index.php');
-        return true;
     }
 }

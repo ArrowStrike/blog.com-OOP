@@ -28,7 +28,6 @@ class ArticlesController
         $commentsToSidebar = Comments::getCommentsToSidebar();
 
         require_once(ROOT . '/views/articles/index.php');
-        return true;
     }
 
 
@@ -52,7 +51,5 @@ class ArticlesController
 
             require_once(ROOT . '/views/articles/index.php');
         }
-        return true;
     }
-
 }

@@ -21,7 +21,6 @@ class ArticleController
             $commentsList = Comments::getComments($articleItem['id']);
 
             require_once(ROOT . '/views/article/index.php');
-        }
-        return true;
+        };
     }
 }
