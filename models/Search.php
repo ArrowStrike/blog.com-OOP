@@ -17,7 +17,7 @@ class Search
         if (!empty($keyWord)) {
             if (mb_strlen($keyWord) < 3) {
                 $articleList = '<p>Слишком короткий поисковый запрос.</p>';
-            } else if (strlen($keyWord) > 128) {
+            } else if (mb_strlen($keyWord) > 128) {
                 $articleList = '<p>Слишком длинный поисковый запрос.</p>';
             } else {
                 $result = $GLOBALS['CONNECTION']->prepare("SELECT *

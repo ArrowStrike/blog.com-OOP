@@ -450,7 +450,7 @@ function searchArticles($link, $keyWord)
     if (!empty($keyWord)) {
         if (mb_strlen($keyWord) < 3) {
             $matchFound = '<p>Слишком короткий поисковый запрос.</p>';
-        } else if (strlen($keyWord) > 128) {
+        } else if (mb_strlen($keyWord) > 128) {
             $matchFound = '<p>Слишком длинный поисковый запрос.</p>';
         } else {
             $q = "SELECT *
