@@ -10,8 +10,7 @@ class Search
 {
     public static function getSearchList($perPage, $offset = null)
     {
-        $db = Db::getConnection();
-        $matchFound = null;
+           $matchFound = null;
 
         $keyWord = self::getKeyWord();
 
@@ -21,7 +20,7 @@ class Search
             } else if (strlen($keyWord) > 128) {
                 $articleList = '<p>Слишком длинный поисковый запрос.</p>';
             } else {
-                $result = $db->prepare("SELECT *
+                $result = $GLOBALS['CONNECTION']->prepare("SELECT *
                   FROM articles WHERE title LIKE '%$keyWord%'
                   OR text LIKE '%$keyWord%' LIMIT $offset,$perPage");
 
@@ -49,10 +48,7 @@ class Search
 
     public static function getTotalCountOfSearch($keyWord)
     {
-
-        $db = Db::getConnection();
-
-        $result = $db->prepare("SELECT COUNT(id) AS total_count 
+        $result = $GLOBALS['CONNECTION']->prepare("SELECT COUNT(id) AS total_count 
                     FROM articles WHERE title LIKE '%$keyWord%'
                     OR text LIKE '%$keyWord%'");
         $result->execute();

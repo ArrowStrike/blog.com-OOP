@@ -10,9 +10,8 @@ class Comments
 {
     public static function getCommentsToSidebar()
     {
-        $db = Db::getConnection();
         $commentsList = array();
-        $result = $db->query("SELECT * FROM comments ORDER BY id DESC LIMIT 5");
+        $result = $GLOBALS['CONNECTION']->query("SELECT * FROM comments ORDER BY id DESC LIMIT 5");
         $result->setFetchMode(PDO::FETCH_ASSOC);
 
         while ($row = $result->fetch()) {
@@ -24,14 +23,9 @@ class Comments
 
     public static function getComments($id)
     {
-        /*
-          ?>*/
+           $id = (int)$id;
 
-        $id = (int)$id;
-
-        $db = Db::getConnection();
-
-        $result = $db->query("SELECT * FROM comments 
+        $result = $GLOBALS['CONNECTION']->query("SELECT * FROM comments 
                                       WHERE articles_id = " . $id . " ORDER BY id DESC");
 
         $result->setFetchMode(PDO::FETCH_ASSOC);
@@ -96,7 +90,7 @@ class Comments
 
     public static function checkName($name)
     {
-        if ($name == '') {
+        if (empty($name)) {
             return false;
         }
         return true;
@@ -104,7 +98,7 @@ class Comments
 
     public static function checkEmail($email)
     {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL) == false || $email == '') {
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) == false || empty($email)) {
             return false;
         }
         return true;
@@ -113,7 +107,7 @@ class Comments
 
     public static function checkText($text)
     {
-        if ($text == '') {
+        if (empty($text)) {
             return false;
         }
         return true;
@@ -121,12 +115,10 @@ class Comments
 
     public static function addComments($commentUserName, $commentUserEmail, $commentText, $articleID)
     {
-        $db = Db::getConnection();
-
         $sql = 'INSERT INTO comments (author, email, text, pubdate, articles_id) '
             . 'VALUES (:author, :email, :text, NOW(), :articles_id)';
 
-        $result = $db->prepare($sql);
+        $result = $GLOBALS['CONNECTION']->prepare($sql);
         $result->bindParam(':author', $commentUserName, PDO::PARAM_STR);
         $result->bindParam(':email', $commentUserEmail, PDO::PARAM_STR);
         $result->bindParam(':text', $commentText, PDO::PARAM_STR);
@@ -161,5 +153,3 @@ class Comments
 
     }
 }
-
-
