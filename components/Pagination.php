@@ -29,7 +29,7 @@ class Pagination
     }
 
 
-   //HTML-код со ссылками навигации
+    //HTML-код со ссылками навигации
     public function get()
     {
         # Для записи ссылок
@@ -69,7 +69,7 @@ class Pagination
         return $html;
     }
 
-   //Для генерации HTML-кода ссылки
+    //Для генерации HTML-кода ссылки
     private function generateHtml($page, $text = null)
     {
         # Если текст ссылки не указан

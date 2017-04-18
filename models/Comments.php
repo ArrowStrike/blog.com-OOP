@@ -23,7 +23,7 @@ class Comments
 
     public static function getComments($id)
     {
-           $id = (int)$id;
+        $id = (int)$id;
 
         $result = $GLOBALS['DB']->query("SELECT * FROM comments 
                                       WHERE articles_id = " . $id . " ORDER BY id DESC");

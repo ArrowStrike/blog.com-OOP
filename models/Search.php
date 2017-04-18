@@ -10,7 +10,7 @@ class Search
 {
     public static function getSearchList($perPage, $offset = null)
     {
-           $matchFound = null;
+        $matchFound = null;
 
         $keyWord = self::getKeyWord();
 
