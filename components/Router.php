@@ -2,18 +2,34 @@
 
 class Router
 {
+    //массив в котором будут храниться маршруты
+    private $routes = array(
 
+        //   запрос что набирает пользователь/строка по которой мы узнаем, где обрабатывается запрос
+        //        => controller / action / params(name or page)
 
-    private $routes; //массив в котором будут храниться маршруты
+        'aboutMe' => 'aboutMe/index',
+        'copyright' => 'copyright/index',
 
-    public function __construct()
-    {
-        // указываем путь к роутам
-        $routesPath = ROOT . '/config/routes.php';
+        //поиск
+        'search(.*)/page-([0-9]+)' => 'articles/search/$2',
+        'search(.*)' => 'articles/search',
 
-        // присваиваем свойству routes массив в файле routes.php
-        $this->routes = include($routesPath);
-    }
+        //страница статьи
+        'article/([0-9a-z_]+)' => 'article/index/$1',
+
+        //страница всех стетей
+        'articles/page-([0-9]+)' => 'articles/index//$1',
+        'articles' => 'articles/index',
+
+        //категории
+        '([0-9a-z_]+)/page-([0-9]+)' => 'articles/index/$1/$2',
+        '(.+)' => 'articles/index/$1',
+
+        //начальная страница
+        '' => 'site/index',
+    );
+
 
     private function getURI()//Returns request string
     {
@@ -27,12 +43,12 @@ class Router
         //Получаем строку запроса
         $uri = $this->getURI();
 
-        //Проверить наличие такого запроса в routes.php
+        //Проверить наличие такого запроса в массиве routes
         foreach ($this->routes as $uriPattern => $path) {
             //Сравниваем $uriPattern и $uri
             if (preg_match("~$uriPattern~", $uri)) { //~ вместо / ,так как могут быть и сплеши в адресе
 
-                //в строке запроса, ищем параметры "спорт/114",
+                //в строке запроса, ищем параметры "sport/114",
                 // если находим, то подставляем в строку Path articles/view/$1/$2 и получим внутренний маршрут
                 $internalRoute = preg_replace("~$uriPattern~", $path, $uri);
 

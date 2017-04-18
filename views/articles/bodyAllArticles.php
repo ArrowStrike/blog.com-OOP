@@ -47,7 +47,7 @@ if (isset($_GET['q'])) { ?>
                 ?>
             </div>
             <?php
-            if ($total > Configs::getConfig('articlePerPage') && is_array($articleList)) {
+            if ($total > Config::getConfig('articlePerPage') && is_array($articleList)) {
                 echo $pagination->get();
             } ?>
         </div>

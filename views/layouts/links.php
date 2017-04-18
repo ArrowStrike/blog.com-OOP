@@ -10,7 +10,7 @@
 <!-- Custom -->
 <link rel="stylesheet"
       type="text/css"
-      href="/public/media/css/style.css?version=<?php echo Configs::getConfig('version') ?>">
+      href="/public/media/css/style.css?version=<?php echo Config::getConfig('version') ?>">
 
 <link rel="shortcut icon"
       href="/public/media/images/books.ico"

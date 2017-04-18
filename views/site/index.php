@@ -1,5 +1,5 @@
 <?php include ROOT . "/views/layouts/htmlSet.php"; ?>
-    <title><?php echo Configs::getConfig('title') ?></title>
+    <title><?php echo Config::getConfig('title') ?></title>
 
 <?php
 include ROOT . "/views/layouts/links.php";
@@ -22,7 +22,7 @@ include ROOT . "/views/layouts/header.php"; ?>
                         <h3>Life Style [Новейшее]</h3>
 
                         <?php
-                        $articleList = Articles::getArticleList(Configs::getConfig('articlePerPage'), 'life-style');
+                        $articleList = Articles::getArticleList(Config::getConfig('articlePerPage'), 'life-style');
                         include ROOT . "/views/site/bodyRecentArticles.php"; ?>
 
                     </div>
@@ -31,7 +31,7 @@ include ROOT . "/views/layouts/header.php"; ?>
                         <h3>IT [Новейшее]</h3>
 
                         <?php
-                        $articleList = Articles::getArticleList(Configs::getConfig('articlePerPage'), 'it');
+                        $articleList = Articles::getArticleList(Config::getConfig('articlePerPage'), 'it');
                         include ROOT . "/views/site/bodyRecentArticles.php"; ?>
 
                     </div>

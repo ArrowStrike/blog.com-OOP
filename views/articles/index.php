@@ -1,5 +1,5 @@
 <?php include ROOT . "/views/layouts/htmlSet.php"; ?>
-    <title> <?php echo Configs::getConfig('title') ?></title>
+    <title> <?php echo Config::getConfig('title') ?></title>
 <?php
 include ROOT . "/views/layouts/links.php";
 include ROOT . "/views/layouts/header.php"; ?>

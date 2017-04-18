@@ -15,14 +15,14 @@ class ArticlesController
         if ($page == 0) {
             $page = 1;
         }
-        $offset = (Configs::getConfig('articlePerPage') * $page) - Configs::getConfig('articlePerPage'); //сдвиг
-        $articleList = Articles::getArticleList(Configs::getConfig('articlePerPage'), $category, $offset);
+        $offset = (Config::getConfig('articlePerPage') * $page) - Config::getConfig('articlePerPage'); //сдвиг
+        $articleList = Articles::getArticleList(Config::getConfig('articlePerPage'), $category, $offset);
 
         // Общее количетсво статей (необходимо для постраничной навигации)
         $total = Articles::getTotalCountOfArticle($category);
 
         // Создаем объект Pagination - постраничная навигация
-        $pagination = new Pagination($total, $page, Configs::getConfig('articlePerPage'), 'page-');
+        $pagination = new Pagination($total, $page, Config::getConfig('articlePerPage'), 'page-');
 
         $articleToSidebar = Articles::getArticleToSidebar();
         $commentsToSidebar = Comments::getCommentsToSidebar();
@@ -39,12 +39,12 @@ class ArticlesController
             if ($page == 0) {
                 $page = 1;
             }
-            $offset = (Configs::getConfig('articlePerPage') * $page) - Configs::getConfig('articlePerPage'); //сдвиг
-            $articleList = Search::getSearchList(Configs::getConfig('articlePerPage'), $offset);
+            $offset = (Config::getConfig('articlePerPage') * $page) - Config::getConfig('articlePerPage'); //сдвиг
+            $articleList = Search::getSearchList(Config::getConfig('articlePerPage'), $offset);
 
             $keyWord = Search::getKeyWord();
             $total = Search::getTotalCountOfSearch($keyWord);
-            $pagination = new Pagination($total, $page, Configs::getConfig('articlePerPage'), 'page-');
+            $pagination = new Pagination($total, $page, Config::getConfig('articlePerPage'), 'page-');
 
             $articleToSidebar = Articles::getArticleToSidebar();
             $commentsToSidebar = Comments::getCommentsToSidebar();

@@ -10,16 +10,15 @@ class Db
 {
     public static function getConnection()
     {
-
-        $paramsPath = ROOT . '/config/dbParams.php';
-        $params = include($paramsPath);
-        $dsn = "mysql:host={$params['host']};dbname={$params['dbname']}";
+        $params = Config::getConfig('db');
+        $dsn = "mysql:host={$params['host']};dbname={$params['dbName']}";
 
         try {
             $db = new PDO($dsn,
                 $params['user'],
                 $params['password'],
                 array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
+            // Задаем кодировку
             $db->exec("set names utf8");
 
         } catch (PDOException $e) {
