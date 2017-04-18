@@ -11,7 +11,7 @@ class Comments
     public static function getCommentsToSidebar()
     {
         $commentsList = array();
-        $result = $GLOBALS['CONNECTION']->query("SELECT * FROM comments ORDER BY id DESC LIMIT 5");
+        $result = $GLOBALS['DB']->query("SELECT * FROM comments ORDER BY id DESC LIMIT 5");
         $result->setFetchMode(PDO::FETCH_ASSOC);
 
         while ($row = $result->fetch()) {
@@ -25,7 +25,7 @@ class Comments
     {
            $id = (int)$id;
 
-        $result = $GLOBALS['CONNECTION']->query("SELECT * FROM comments 
+        $result = $GLOBALS['DB']->query("SELECT * FROM comments 
                                       WHERE articles_id = " . $id . " ORDER BY id DESC");
 
         $result->setFetchMode(PDO::FETCH_ASSOC);
@@ -57,13 +57,13 @@ class Comments
 
 
             // Валидация полей
-            if (!Comments::checkName($logs['commentUserName'])) {
+            if (!empty($name)) {
                 $logs['errors'][] = 'Введите имя!';
             }
             if (!Comments::checkEmail($logs['commentUserEmail'])) {
                 $logs['errors'][] = 'Введите правильный Email!';
             }
-            if (!Comments::checkText($logs['commentText'])) {
+            if (!empty($text)) {
                 $logs['errors'][] = 'Введите текст комментария!';
             }
 
@@ -88,26 +88,9 @@ class Comments
         return $logs;
     }
 
-    public static function checkName($name)
-    {
-        if (empty($name)) {
-            return false;
-        }
-        return true;
-    }
-
     public static function checkEmail($email)
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL) === false || empty($email)) {
-            return false;
-        }
-        return true;
-    }
-
-
-    public static function checkText($text)
-    {
-        if (empty($text)) {
             return false;
         }
         return true;
@@ -118,7 +101,7 @@ class Comments
         $sql = 'INSERT INTO comments (author, email, text, pubdate, articles_id) '
             . 'VALUES (:author, :email, :text, NOW(), :articles_id)';
 
-        $result = $GLOBALS['CONNECTION']->prepare($sql);
+        $result = $GLOBALS['DB']->prepare($sql);
         $result->bindParam(':author', $commentUserName, PDO::PARAM_STR);
         $result->bindParam(':email', $commentUserEmail, PDO::PARAM_STR);
         $result->bindParam(':text', $commentText, PDO::PARAM_STR);

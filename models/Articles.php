@@ -7,7 +7,7 @@ class Articles
         $category = trim($titleTranslit);
 
 
-        $result = $GLOBALS['CONNECTION']->prepare("SELECT * FROM articles WHERE title_translit=" . "'$titleTranslit'");
+        $result = $GLOBALS['DB']->prepare("SELECT * FROM articles WHERE title_translit=" . "'$titleTranslit'");
         $result->execute([$category]);
         $result->setFetchMode(PDO::FETCH_ASSOC);
 
@@ -19,7 +19,7 @@ class Articles
     public static function incrementViews($articleID)
     {
         $articleID = (int)$articleID;
-        $GLOBALS['CONNECTION']->query("UPDATE articles SET views = views + 1 WHERE id = " . $articleID);
+        $GLOBALS['DB']->query("UPDATE articles SET views = views + 1 WHERE id = " . $articleID);
     }
 
     public static function getArticleList($perPage, $category = null, $offset = null)
@@ -30,7 +30,7 @@ class Articles
         if ($offset != null) {
 
             if ($category != null) {
-                $result = $GLOBALS['CONNECTION']->prepare("SELECT * FROM articles WHERE category_id=
+                $result = $GLOBALS['DB']->prepare("SELECT * FROM articles WHERE category_id=
                                   (SELECT id FROM articles_categories 
                                   WHERE title_translit=?) 
                                   ORDER BY id DESC LIMIT " . $offset . "," . $perPage);
@@ -38,13 +38,13 @@ class Articles
                 $result->execute([$category]);
 
             } else {
-                $result = $GLOBALS['CONNECTION']->query("SELECT * FROM articles ORDER BY id DESC LIMIT $offset,$perPage");
+                $result = $GLOBALS['DB']->query("SELECT * FROM articles ORDER BY id DESC LIMIT $offset,$perPage");
 
             }
 
         } else {
             if ($category != null) {
-                $result = $GLOBALS['CONNECTION']->prepare("SELECT * FROM articles WHERE category_id=
+                $result = $GLOBALS['DB']->prepare("SELECT * FROM articles WHERE category_id=
                                   (SELECT id FROM articles_categories 
                                   WHERE title_translit=?) 
                                   ORDER BY id DESC LIMIT " . $perPage);
@@ -52,7 +52,7 @@ class Articles
                 $result->execute([$category]);
 
             } else {
-                $result = $GLOBALS['CONNECTION']->query("SELECT * FROM articles ORDER BY id DESC LIMIT " . $perPage);
+                $result = $GLOBALS['DB']->query("SELECT * FROM articles ORDER BY id DESC LIMIT " . $perPage);
             }
         }
         $result->setFetchMode(PDO::FETCH_ASSOC);
@@ -69,12 +69,12 @@ class Articles
         $category = trim($category);
 
         if ($category != null) {
-            $result = $GLOBALS['CONNECTION']->prepare("SELECT COUNT(id) as total_count FROM articles WHERE category_id=
+            $result = $GLOBALS['DB']->prepare("SELECT COUNT(id) as total_count FROM articles WHERE category_id=
                                   (SELECT id FROM articles_categories 
                                   WHERE title_translit=?)");
             $result->execute([$category]);
         } else {
-            $result = $GLOBALS['CONNECTION']->query("SELECT COUNT(id) as total_count FROM articles");
+            $result = $GLOBALS['DB']->query("SELECT COUNT(id) as total_count FROM articles");
         }
 
         $result->setFetchMode(PDO::FETCH_ASSOC);
@@ -88,7 +88,7 @@ class Articles
     public static function getArticleToSidebar()
     {
         $articleList = array();
-        $result = $GLOBALS['CONNECTION']->query("SELECT * FROM articles ORDER BY views DESC LIMIT 5");
+        $result = $GLOBALS['DB']->query("SELECT * FROM articles ORDER BY views DESC LIMIT 5");
         $result->setFetchMode(PDO::FETCH_ASSOC);
 
         while ($row = $result->fetch()) {
@@ -103,7 +103,7 @@ class Articles
     {
         $id = (int)$id;
 
-        $result = $GLOBALS['CONNECTION']->query("SELECT title_translit FROM articles WHERE id=" . $id);
+        $result = $GLOBALS['DB']->query("SELECT title_translit FROM articles WHERE id=" . $id);
 
         $result = $result->fetch();
 

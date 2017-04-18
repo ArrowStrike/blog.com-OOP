@@ -20,7 +20,7 @@ class Search
             } else if (mb_strlen($keyWord) > 128) {
                 $articleList = '<p>Слишком длинный поисковый запрос.</p>';
             } else {
-                $result = $GLOBALS['CONNECTION']->prepare("SELECT *
+                $result = $GLOBALS['DB']->prepare("SELECT *
                   FROM articles WHERE title LIKE '%$keyWord%'
                   OR text LIKE '%$keyWord%' LIMIT $offset,$perPage");
 
@@ -48,7 +48,7 @@ class Search
 
     public static function getTotalCountOfSearch($keyWord)
     {
-        $result = $GLOBALS['CONNECTION']->prepare("SELECT COUNT(id) AS total_count 
+        $result = $GLOBALS['DB']->prepare("SELECT COUNT(id) AS total_count 
                     FROM articles WHERE title LIKE '%$keyWord%'
                     OR text LIKE '%$keyWord%'");
         $result->execute();
